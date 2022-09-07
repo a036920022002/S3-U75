@@ -4,9 +4,11 @@ const bodyParser = require('body-parser')
 const app = express()
 const exphbs = require('express-handlebars')
 const Todo = require('./models/todo')
+require('dotenv').config()
+const MY_ENV = process.env.MY_ENV
 
 //connect mongoose
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MY_ENV, { useNewUrlParser: true, useUnifiedTopology: true })
 //check mongoose connection 
 const db = mongoose.connection
 db.on('error', () => {
@@ -24,7 +26,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 //index show the todo
 app.get('/', (req, res) => {
   Todo.find()
-    .lean().then(todos => res.render('index', { todos }))
+    .lean()
+    .sort({ _id: 'asc' })
+    .then(todos => res.render('index', { todos }))
     .catch(error => console.error(error))
 })
 
@@ -49,7 +53,6 @@ app.get('/todos/:id', (req, res) => {
 })
 
 app.get('/todos/:id/edit', (req, res) => {
-
   const id = req.params.id
   return Todo.findById(id).lean().then(todo => res.render('edit', { todo }))
     .catch(error => console.log('error'))
@@ -57,9 +60,10 @@ app.get('/todos/:id/edit', (req, res) => {
 
 app.post('/todos/:id/edit', (req, res) => {
   const id = req.params.id
-  const name = req.body.name
+  const { name, isDone } = req.body
   return Todo.findById(id).then(todo => {
     todo.name = name
+    todo.isDone = isDone === 'on'
     return todo.save()
   })
     .then(() => res.redirect(`/todos/${id}`))

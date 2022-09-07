@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 const Todo = require('../todo')
+require('dotenv').config()
+const MY_ENV = process.env.MY_ENV
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MY_ENV, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
 db.on('error', () => {
