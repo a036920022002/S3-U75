@@ -15,14 +15,13 @@ router.post('/', (req, res) => {
   return Todo.create({ name: name }).then(() => res.redirect('/'))
     .catch(error => console.log('error'))
 })
-
+//詳細資訊
 router.get('/:id', (req, res) => {
-
   const id = req.params.id
   return Todo.findById(id).lean().then(todo => res.render('detail', { todo }))
     .catch(error => console.log('error'))
 })
-
+//修改
 router.get('/:id/edit', (req, res) => {
   const id = req.params.id
   return Todo.findById(id).lean().then(todo => res.render('edit', { todo }))
@@ -41,7 +40,7 @@ router.put('/:id', (req, res) => {
     .catch(error => { console.log(error) })
 
 })
-
+//刪除
 router.delete('/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id).then(todo => {

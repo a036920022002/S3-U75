@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-
 require('dotenv').config()
+
 const MY_ENV = process.env.MY_ENV
 
 //connect mongoose

@@ -3,6 +3,7 @@ const router = express.Router()
 
 const Todo = require('../../models/todo')
 
+//拿到所有的todo 
 router.get('/', (req, res) => {
   Todo.find()
     .lean()
