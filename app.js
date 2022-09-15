@@ -8,6 +8,7 @@ const router = require('./routes/index')
 require('./config/mongoose')
 
 const app = express()
+const PORT = process.env.PORT || 3000
 //use handlebars
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
@@ -17,6 +18,6 @@ app.use(methodOverride('_method'))
 
 app.use(router)
 
-app.listen(3000, () => {
-  console.log('http://localhost:3000')
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`)
 })
